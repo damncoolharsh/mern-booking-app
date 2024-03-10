@@ -42,3 +42,15 @@ test("should be able to save hotel", async ({ page }) => {
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Hotel Saved!")).toBeVisible({ timeout: 20000 });
 });
+
+test("should display hotels", async ({ page }) => {
+  await page.goto(`${UI_URL}my-hotels`);
+
+  await expect(page.getByText("Harsh Thakur")).toBeVisible();
+  await expect(page.getByText("Lorem ipsum")).toBeVisible();
+  await expect(page.getByText("Shimla,India")).toBeVisible();
+  await expect(page.getByText("Budget")).toBeVisible();
+
+  await expect(page.getByRole("link", { name: "View Details" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
+});
