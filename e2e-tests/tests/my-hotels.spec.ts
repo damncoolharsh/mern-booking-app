@@ -49,8 +49,31 @@ test("should display hotels", async ({ page }) => {
   await expect(page.getByText("Harsh Thakur")).toBeVisible();
   await expect(page.getByText("Lorem ipsum")).toBeVisible();
   await expect(page.getByText("Shimla,India")).toBeVisible();
-  await expect(page.getByText("Budget")).toBeVisible();
+  await expect(page.getByText("Budget").first()).toBeVisible();
 
-  await expect(page.getByRole("link", { name: "View Details" })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "View Details" }).first()
+  ).toBeVisible();
   await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
+});
+
+test("should edit hotel", async ({ page }) => {
+  await page.goto(`${UI_URL}my-hotels`);
+
+  await page.getByRole("link", { name: "View Details" }).first().click();
+
+  await page.waitForSelector('[name="name"]', { state: "attached" });
+
+  await expect(page.locator('[name="name"]')).toHaveValue("Harsh Thakur");
+
+  await page.locator('[name="name"]').fill("Lorem Ipsum");
+  await page.getByRole("button", { name: "Save" }).click();
+
+  await expect(page.getByText("Hotel Updated")).toBeVisible();
+
+  await page.reload();
+  await expect(page.locator('[name="name"]')).toHaveValue("Lorem Ipsum");
+  await page.locator('[name="name"]').fill("Harsh Thakur");
+
+  await page.getByRole("button", { name: "Save" }).click();
 });
