@@ -11,7 +11,7 @@ const MyHotels = () => {
     "fetchMyHotels",
     apiClient.fetchMyHotels,
     {
-      onError: (err) => {
+      onError: () => {
         showToast({ message: "Something went wrong", type: "WARNING" });
       },
     }
